@@ -1,0 +1,105 @@
+version: '2'
+
+networks:
+  jxh-laravel:
+
+services:
+  jxh-coolq:
+    image: richardchien/cqhttp:latest
+    container_name: jxh-coolq
+    ports:
+      - "9001:9000"
+      - "5700:5700"
+    volumes:
+      - ./coolq:/home/user/coolq
+    environment:
+      COOLQ_ACCOUNT:
+      CQHTTP_POST_URL: "http://0.0.0.0:8080/cq/upload"
+      CQHTTP_SERVE_DATA_FILES: yes
+      VNC_PASSWD: MAX8char
+    networks:
+      - jxh-laravel
+
+  jxh-site:
+    image: nginx:stable-alpine
+    container_name: jxh-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - jxh-php
+      - jxh-mysql
+      - jxh-redis
+    networks:
+      - jxh-laravel
+    environment:
+      DB_HOST: jxh-mysql
+
+  jxh-mysql:
+    image: mysql:5.7.29
+    container_name: jxh-mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: jxhbot
+      MYSQL_USER: jxhbot
+      MYSQL_PASSWORD: jxhbot
+      MYSQL_ROOT_PASSWORD: jxhbot
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - jxh-laravel
+
+  jxh-php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: php
+    volumes:
+      - ./src:/var/www/html
+    expose:
+      - "9000"
+    networks:
+      - jxh-laravel
+      -
+  jxh-redis:
+    image: redis
+    networks:
+      - jxh-laravel
+
+  composer:
+    image: composer:latest
+    container_name: composer
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - jxh-php
+    networks:
+      - jxh-laravel
+
+  npm:
+    image: node:latest
+    container_name: npm
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ['npm']
+
+  artisan:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: artisan
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - jxh-mysql
+    working_dir: /var/www/html
+    entrypoint: ['php', '/var/www/html/artisan']
+    networks:
+      - jxh-laravel
