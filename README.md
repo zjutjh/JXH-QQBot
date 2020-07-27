@@ -1,5 +1,7 @@
 !['logo'](logo.png)
+
 #精小弘机器人
+
 !['php'](https://img.shields.io/packagist/php-v/laravel/laravel)
 
 精小弘机器人由浙江工业大学精弘网络设计的QQ聊天机器人，旨在帮助新生更好适应和了解校园。
