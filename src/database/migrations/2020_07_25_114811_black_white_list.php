@@ -13,7 +13,13 @@ class BlackWhiteList extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('black_lists', function (Blueprint $table) {
+            $table->id();
+            $table->string('user_id')->default(0);
+            $table->string('comments');
+            $table->integer('reject_times')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

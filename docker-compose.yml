@@ -14,8 +14,8 @@ services:
       - ./coolq:/home/user/coolq
     environment:
       COOLQ_ACCOUNT:
-      CQHTTP_POST_URL: "http://0.0.0.0:8080/cq/upload"
-      CQHTTP_SERVE_DATA_FILES: yes
+      CQHTTP_POST_URL: "http://jxh-site/cq/upload"
+      CQHTTP_SERVE_DATA_FILES: 'yes'
       VNC_PASSWD: MAX8char
     networks:
       - jxh-laravel
@@ -51,6 +51,8 @@ services:
       MYSQL_ROOT_PASSWORD: jxhbot
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
     networks:
       - jxh-laravel
 
@@ -65,7 +67,7 @@ services:
       - "9000"
     networks:
       - jxh-laravel
-      -
+
   jxh-redis:
     image: redis
     networks:

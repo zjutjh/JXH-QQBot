@@ -4,7 +4,7 @@
 namespace App\Helpers;
 
 
-class BotConfigs
+class BotConfigs extends SplEnum
 {
-
+    const adminPassword = 'config:admin:password';
 }

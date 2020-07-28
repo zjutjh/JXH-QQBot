@@ -29,6 +29,12 @@ Route::middleware(['admin.login'])->group(function () {
     Route::post('dic/update', 'DictionaryController@update');
 
 
+    Route::post('ban/add', 'BanController@add');
+    Route::post('ban/get', 'BanController@get');
+    Route::post('ban/delete', 'BanController@delete');
+    Route::post('ban/update', 'BanController@update');
+
+
     Route::post('cq/post/{methods}', "CQUploadController@api");
 });
 

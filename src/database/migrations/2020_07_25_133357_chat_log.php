@@ -15,9 +15,10 @@ class ChatLog extends Migration
     {
         Schema::dropIfExists('chats');
         Schema::create('chats', function (Blueprint $table) {
+            $table->id();
             $table->enum('message_type',['private','group','discuss']);
             $table->enum('sub_type',['friend','group','discuss','other','normal','anonymous','notice'])->nullable();
-            $table->integer('message_id')->primary();
+            $table->integer('message_id');
             $table->integer('group_id')->nullable();
             $table->string('message')->nullable();
             $table->integer('font')->nullable();

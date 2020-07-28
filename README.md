@@ -1,31 +1,32 @@
 !['logo'](logo.png)
 
-#精小弘机器人
+# 精小弘机器人
 
 !['php'](https://img.shields.io/packagist/php-v/laravel/laravel)
 
 精小弘机器人由浙江工业大学精弘网络设计的QQ聊天机器人，旨在帮助新生更好适应和了解校园。
 
 使用CoolQ作为QQ驱动的后端，借助 [CQHTTP](https://richardchien.gitee.io/coolq-http-api/docs/) 完成基本通信。
-##进度
 
-###可用的
+## 进度
+
+### 可用的
 
    - 词典
    - AI聊天
    - CoolQ接口转发
    - 管理员
    
-###开发中
+### 开发中
 
    - 文档
    - 用户细节配置
    
-###规划中
+### 规划中
 
    - web用户交互
 
-##安装
+## 安装
 
 使用了Docker技术，让部署变得非常简单
 
@@ -53,7 +54,7 @@ CoolQ 登录:
 
 然后登录CoolQ，即可。
 
-##开发
+## 开发
 
 ```/src```   是项目的后端，使用laravel技术
 

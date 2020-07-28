@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 
+use App\BlackList;
 use App\Chat;
 use App\Dictionary;
 use App\Notice;
@@ -50,6 +51,15 @@ class CQUploadHandles
             {
                 if ($data['sub_type'] == 'invite' && $data['user_id'] == env('masterQQ'))
                     return ['approve' => true];
+                elseif ($data['sub_type'] == 'add'){
+                    $BenUser=BlackList::where('user_id',$data['user_id'])->first();
+                    if($BenUser!==null){
+                        $BenUser['reject_times']=$BenUser['reject_times']+1;
+                        $BenUser->save();
+                        return ['approve' => false];
+                    }
+
+                }
             }
         }
     }
