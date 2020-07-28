@@ -8,18 +8,25 @@
 
 使用CoolQ作为QQ驱动的后端，借助 [CQHTTP](https://richardchien.gitee.io/coolq-http-api/docs/) 完成基本通信。
 ##进度
+
 ###可用的
+
    - 词典
    - AI聊天
    - CoolQ接口转发
    - 管理员
+   
 ###开发中
+
    - 文档
    - 用户细节配置
+   
 ###规划中
+
    - web用户交互
 
 ##安装
+
 使用了Docker技术，让部署变得非常简单
 
 默认情况下设计，如下两个端口

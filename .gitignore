@@ -1,4 +1,5 @@
-.DS_Store
-.idea
-.vscode
-.env
+/.DS_Store
+/.idea
+/.env
+/.vscode
+
