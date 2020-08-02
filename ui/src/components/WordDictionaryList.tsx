@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Fabric} from 'office-ui-fabric-react/lib/Fabric';
 import {DetailsList, DetailsListLayoutMode, IColumn} from 'office-ui-fabric-react/lib/DetailsList';
+import {DefaultButton, PrimaryButton, Stack, IStackTokens} from 'office-ui-fabric-react';
 import {mergeStyleSets} from 'office-ui-fabric-react/lib/Styling';
 import {IDictioary} from "../interface/IDictionary";
 import {apiMap, FetchAPI} from "../utils/Api";
@@ -41,12 +42,6 @@ const classNames = mergeStyleSets({
         marginBottom: '20px',
     },
 });
-const controlStyles = {
-    root: {
-        margin: '0 30px 20px 0',
-        maxWidth: '300px',
-    },
-};
 
 export interface IDetailsListDocumentsExampleState {
     columns: IColumn[];
@@ -55,61 +50,94 @@ export interface IDetailsListDocumentsExampleState {
 
 
 export class DictionaryList extends React.Component<{}, IDetailsListDocumentsExampleState> {
-    private _allItems: IDictioary[];
+    private _allItems: IDictioary[] = [];
+    private _onColumnClick = (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
+        const {columns, items} = this.state;
+        const newColumns: IColumn[] = columns.slice();
+        const currColumn: IColumn = newColumns.filter(currCol => column.key === currCol.key)[0];
+        newColumns.forEach((newCol: IColumn) => {
+            if (newCol === currColumn) {
+                currColumn.isSortedDescending = !currColumn.isSortedDescending;
+                currColumn.isSorted = true;
+            } else {
+                newCol.isSorted = false;
+                newCol.isSortedDescending = true;
+            }
+        });
+        const newItems = _copyAndSort(items, currColumn.fieldName!, currColumn.isSortedDescending);
+        this.setState({
+            columns: newColumns,
+            items: newItems,
+        });
+    };
+    public columns: IColumn[] = [
+        {
+            key: 'column2',
+            name: '关键词',
+            fieldName: 'ask',
+            minWidth: 20,
+            maxWidth: 50,
+            isRowHeader: true,
+            isResizable: true,
+            isSorted: true,
+            isSortedDescending: false,
+            sortAscendingAriaLabel: 'Sorted A to Z',
+            sortDescendingAriaLabel: 'Sorted Z to A',
+            onColumnClick: this._onColumnClick,
+            data: 'string',
+            isPadded: true,
+        },
+        {
+            key: 'column3',
+            name: '应答',
+            fieldName: 'dateModifiedValue',
+            minWidth: 70,
+            maxWidth: 1000,
+            isResizable: true,
+            onColumnClick: this._onColumnClick,
+            data: 'string',
+            onRender: (item: IDictioary) => {
+                return <div style={{
+                    whiteSpace: "pre-wrap"
+                }}>
+                    {item.ans}</div>;
+            },
+            isPadded: true,
+        },
+        {
+            key: 'column4',
+            name: '操作',
+            fieldName: 'action',
+            minWidth: 70,
+            maxWidth: 90,
+            isResizable: true,
+            onColumnClick: this._onColumnClick,
+            data: 'string',
+            onRender: (item: IDictioary) => {
+                return <span> <PrimaryButton>Modify</PrimaryButton>  <PrimaryButton>Delete</PrimaryButton> </span>;
+
+
+            },
+            isPadded: true,
+        },
+    ];
 
     constructor(props: {}) {
         super(props);
-        _getDictioaries().then((data) => {
-            this._allItems = data;
-        });
-        const columns: IColumn[] = [
-            {
-                key: 'column2',
-                name: '关键词',
-                fieldName: 'ask',
-                minWidth: 210,
-                maxWidth: 350,
-                isRowHeader: true,
-                isResizable: true,
-                isSorted: true,
-                isSortedDescending: false,
-                sortAscendingAriaLabel: 'Sorted A to Z',
-                sortDescendingAriaLabel: 'Sorted Z to A',
-                onColumnClick: this._onColumnClick,
-                data: 'string',
-                isPadded: true,
-            },
-            {
-                key: 'column3',
-                name: '应答',
-                fieldName: 'dateModifiedValue',
-                minWidth: 70,
-                maxWidth: 90,
-                isResizable: true,
-                onColumnClick: this._onColumnClick,
-                data: 'string',
-                onRender: (item: IDictioary) => {
-                    return <span>{item.ans}</span>;
-                },
-                isPadded: true,
-            },
-        ];
-
-
+        this._getDictioaries().then();
         this.state = {
             items: this._allItems,
-            columns: columns,
+            columns: this.columns,
         };
     }
 
     public render() {
         const {columns, items} = this.state;
-
         return (
             <Fabric>
                 <DetailsList
-                    items={items}
-                    columns={columns}
+                    items={this.state.items}
+                    columns={this.state.columns}
                     getKey={this._getKey}
                     setKey="none"
                     layoutMode={DetailsListLayoutMode.justified}
@@ -134,26 +162,16 @@ export class DictionaryList extends React.Component<{}, IDetailsListDocumentsExa
         alert(`Item invoked: ${item.name}`);
     }
 
-
-    private _onColumnClick = (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
-        const {columns, items} = this.state;
-        const newColumns: IColumn[] = columns.slice();
-        const currColumn: IColumn = newColumns.filter(currCol => column.key === currCol.key)[0];
-        newColumns.forEach((newCol: IColumn) => {
-            if (newCol === currColumn) {
-                currColumn.isSortedDescending = !currColumn.isSortedDescending;
-                currColumn.isSorted = true;
-            } else {
-                newCol.isSorted = false;
-                newCol.isSortedDescending = true;
-            }
-        });
-        const newItems = _copyAndSort(items, currColumn.fieldName!, currColumn.isSortedDescending);
+    async _getDictioaries(): Promise<void> {
+        let items: IDictioary[] = [];
+        this._allItems = (await FetchAPI(apiMap.getDictionary, {"pass": "123456"})).data as IDictioary[];
+        console.log(this._allItems)
         this.setState({
-            columns: newColumns,
-            items: newItems,
+            items: this._allItems,
+            columns: this.columns,
         });
-    };
+    }
+
 }
 
 function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] {
@@ -161,8 +179,4 @@ function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boo
     return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
 }
 
-async function _getDictioaries(): Promise<IDictioary[]> {
-    let items: IDictioary[] = [];
-    items = (await FetchAPI(apiMap.getDictionary)).data as IDictioary[];
-    return items;
-}
+

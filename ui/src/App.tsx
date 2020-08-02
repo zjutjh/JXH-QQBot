@@ -1,13 +1,19 @@
 import React from 'react';
 import {HeaderBar} from './components/HeaderBar'
-import {DictionaryList} from './components/WordDictionaryList'
-import logo from './fabric.png';
 
+export class App extends React.Component {
 
-export const App: React.FunctionComponent = () => {
-    return (
-        <div>
-            <DictionaryList/>
-        </div>
-    );
+    render() {
+        const {children} = this.props;
+        return (
+            <div>
+                <HeaderBar/>
+                <div>
+                    {children}
+                </div>
+
+            </div>
+        );
+    }
+
 };

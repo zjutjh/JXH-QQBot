@@ -13,11 +13,16 @@
     "gen": "npx plop"
   },
   "dependencies": {
+    "@types/react": "^16.9.43",
+    "@types/react-router": "^5.1.8",
+    "@types/react-router-dom": "^5.1.5",
+    "@uifabric/react-cards": "^0.110.11",
     "office-ui-fabric-react": "^7.123.10",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "redux": "^4.0.5"
   },
   "devDependencies": {
