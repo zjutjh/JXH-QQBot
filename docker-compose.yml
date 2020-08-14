@@ -4,19 +4,15 @@ networks:
   jxh-laravel:
 
 services:
-  jxh-coolq:
-    image: richardchien/cqhttp:latest
-    container_name: jxh-coolq
+  jxh-mirai:
+    build:
+      context: .
+      dockerfile: mirai.dockerfile
+    container_name: jxh-mirai
     ports:
-      - "9001:9000"
-      - "5700:5700"
+      - "8881:8881"
     volumes:
-      - ./coolq:/home/user/coolq
-    environment:
-      COOLQ_ACCOUNT:
-      CQHTTP_POST_URL: "http://jxh-site/cq/upload"
-      CQHTTP_SERVE_DATA_FILES: 'yes'
-      VNC_PASSWD: MAX8char
+      - ./mirai:/var/mirai
     networks:
       - jxh-laravel
 

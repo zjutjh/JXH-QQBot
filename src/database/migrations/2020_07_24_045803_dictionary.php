@@ -16,7 +16,8 @@ class Dictionary extends Migration
         Schema::create('dictionaries', function (Blueprint $table) {
             $table->id();
             $table->string('ask')->index();
-            $table->string('ans');
+            $table->string('type');
+            $table->string('ans',1024);
             $table->timestamps();
         });
 

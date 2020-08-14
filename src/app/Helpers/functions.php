@@ -68,3 +68,8 @@ function StandardFailJsonResponse($data = null)
 function issetDefNull($var){
     return isset($var)?$var:null;
 }
+
+
+function replaceLineMark($str){
+    return str_replace('\r\n', "\r\n", str_replace('[换行]', "\r\n", $str));
+}

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Http;
 
 Route::get('/', 'Controller@index');
 Route::post('cq/upload', 'CQUploadController@upload');
+Route::post('mirai/report', 'MiraiUploadController@upload');
 
 Route::post('auth/login', 'LoginController');
 

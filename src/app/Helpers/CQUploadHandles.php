@@ -16,6 +16,7 @@ class CQUploadHandles
     {
         $chat = new Chat();
         $chat->fill($data);
+        $chat->save();
         $msg = trim($data['message']);
 
         if ($msg === CQCode::atBot())
