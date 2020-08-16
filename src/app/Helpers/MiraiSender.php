@@ -25,12 +25,18 @@ class MiraiSender
 
     public static function Send($url, $data)
     {
-        Log::info('Sender');
         $host = Config::get('qqBot.report_url');
         if (!Cache::has('vertifyed') || !Cache::get('vertifyed') == true)
             MiraiSender::Auth();
         $data['sessionKey'] = Cache::get('sessionKey');
-        Http::asJson()->post($host . $url, $data);
+        $res=Http::asJson()->post($host . $url, $data);
+
+        if(isset($res['code'])&&$res['code']===3){
+            MiraiSender::Auth();
+            $data['sessionKey'] = Cache::get('sessionKey');
+            $res=Http::asJson()->post($host . $url, $data);
+        }
+
     }
 
     private static function Auth()
@@ -42,7 +48,7 @@ class MiraiSender
         $response = Http::asJson()->post($host . '/auth', $req);
         if ($response['code'] === 0)
             if (MiraiSender::Vertify($response['session']))
-                Cache::put('sessionKey', $response['session']);
+                Cache::put('sessionKey', $response['session'],1500);
     }
 
     private static function Vertify($session)
@@ -55,11 +61,10 @@ class MiraiSender
         );
         $response = Http::asJson()->post($host . '/verify', $req);
         if ($response['code'] === 0) {
-            Cache::put('vertifyed', true);
+            Cache::put('vertifyed', true,1500);
             return true;
         }
         return false;
-
 
     }
 }

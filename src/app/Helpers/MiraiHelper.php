@@ -9,6 +9,7 @@ use App\Chat;
 use App\Dictionary;
 use App\Notice;
 use App\RequestLog;
+use Illuminate\Support\Facades\Config;
 
 class MiraiHelper
 {
@@ -68,7 +69,7 @@ class MiraiHelper
     public static function isAtBot($messageChain)
     {
         foreach ($messageChain as $message) {
-            if ($message['type'] === 'At' && $message['target'] === env('botQQ'))
+            if ($message['type'] === 'At' &&  strval($message['target']) === Config::get('qqBot.botQQ'))
                 return true;
         }
         return false;

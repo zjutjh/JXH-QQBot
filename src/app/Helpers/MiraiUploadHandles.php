@@ -27,17 +27,20 @@ class MiraiUploadHandles
     public static function MessageHandle($data)
     {
         $msg = MiraiHelper::getPainText($data['messageChain']);
-        if ($msg == '')
+        Log::info($data);
+        if ($msg == '' && MiraiHelper::isAtBot($data['messageChain']) )
             $msg = '菜单';
 
         $res = Dictionary::getReply($msg);
 
+        Log::info(MiraiHelper::isAtBot($data['messageChain']));
         if ($res !== null)
             $res = replaceLineMark($res[rand(0, count($res) - 1)]->ans);
 
         else if ($data['type'] != 'GroupMessage' || MiraiHelper::isAtBot($data['messageChain']))
-            $res = AIChat::TencentAIChat(trim($data['sender']['group']['id']), $msg);
+            $res = AIChat::TencentAIChat(trim($data['sender']['id']), $msg);
         if ($res) {
+            $res="\r\n".$res;
             $url = '';
             $target='';
             $messageChain=[];
