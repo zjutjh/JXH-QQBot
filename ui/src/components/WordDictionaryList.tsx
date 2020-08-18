@@ -7,6 +7,10 @@ import {IDictioary} from "../interface/IDictionary";
 import {apiMap, FetchAPI} from "../utils/Api";
 
 const classNames = mergeStyleSets({
+    root: {
+        width: "calc(100% - 375px)",
+        minWidth: "400px"
+    },
     fileIconHeaderIcon: {
         padding: 0,
         fontSize: '16px',

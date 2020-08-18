@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Nav, INavStyles, INavLinkGroup } from 'office-ui-fabric-react/lib/Nav';
 
-const navStyles: Partial<INavStyles> = { root: { width: 300 } };
+const navStyles: Partial<INavStyles> = { root: { width: 375,flexWrap:"wrap" } };
 
 const navLinkGroups: INavLinkGroup[] = [
     {
@@ -11,19 +11,10 @@ const navLinkGroups: INavLinkGroup[] = [
         links: [
             {
                 key: 'ActivityItem',
-                name: 'ActivityItem',
-                url: '#/examples/activityitem',
+                name: '词典',
+                url: '#/dictionary',
             },
-            {
-                key: 'Breadcrumb',
-                name: 'Breadcrumb',
-                url: '#/examples/breadcrumb',
-            },
-            {
-                key: 'Button',
-                name: 'Button',
-                url: '#/examples/button',
-            },
+
         ],
     },
     {
@@ -31,21 +22,7 @@ const navLinkGroups: INavLinkGroup[] = [
         expandAriaLabel: 'Expand Extended components section',
         collapseAriaLabel: 'Collapse Extended components section',
         links: [
-            {
-                key: 'ColorPicker',
-                name: 'ColorPicker',
-                url: '#/examples/colorpicker',
-            },
-            {
-                key: 'ExtendedPeoplePicker',
-                name: 'ExtendedPeoplePicker',
-                url: '#/examples/extendedpeoplepicker',
-            },
-            {
-                key: 'GroupedList',
-                name: 'GroupedList',
-                url: '#/examples/groupedlist',
-            },
+
         ],
     },
     {
@@ -53,21 +30,7 @@ const navLinkGroups: INavLinkGroup[] = [
         expandAriaLabel: 'Expand Utilities section',
         collapseAriaLabel: 'Collapse Utilities section',
         links: [
-            {
-                key: 'FocusTrapZone',
-                name: 'FocusTrapZone',
-                url: '#/examples/focustrapzone',
-            },
-            {
-                key: 'FocusZone',
-                name: 'FocusZone',
-                url: '#/examples/focuszone',
-            },
-            {
-                key: 'MarqueeSelection',
-                name: 'MarqueeSelection',
-                url: '#/examples/marqueeselection',
-            },
+
         ],
     },
 ];

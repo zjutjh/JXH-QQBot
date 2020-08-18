@@ -5,6 +5,7 @@ import {LoginView} from "./view/LoginView";
 import React from "react";
 import {BrowserRouter, HashRouter} from "react-router-dom";
 import {DashBoard} from "./view/Dashboard";
+import {DictionaryList} from "./components/WordDictionaryList";
 
 export default () => (
     <HashRouter>
@@ -15,7 +16,7 @@ export default () => (
                     <Route exact path="/login" component={LoginView}/>
                     <Route path="/">
                         <DashBoard>
-                            <Route path="/examples"/>
+
                         </DashBoard>
                     </Route>
                 </Switch>
