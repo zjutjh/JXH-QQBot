@@ -21,49 +21,49 @@ class MiraiUploadHandles
             case 'FriendMessage':
             case 'TempMessage':
                 self::MessageHandle($data);
+                break;
+            case 'MemberJoinEvent':
+                self::MemberJoinEventHandle($data);
         }
     }
 
     public static function MessageHandle($data)
     {
         $msg = MiraiHelper::getPainText($data['messageChain']);
-        Log::info($data);
-        if ($msg == '' && MiraiHelper::isAtBot($data['messageChain']) )
+        if ($msg == '' && MiraiHelper::isAtBot($data['messageChain']))
             $msg = '菜单';
 
         $res = Dictionary::getReply($msg);
 
-        Log::info(MiraiHelper::isAtBot($data['messageChain']));
         if ($res !== null)
             $res = replaceLineMark($res[rand(0, count($res) - 1)]->ans);
 
         else if ($data['type'] != 'GroupMessage' || MiraiHelper::isAtBot($data['messageChain']))
             $res = AIChat::TencentAIChat(trim($data['sender']['id']), $msg);
         if ($res) {
-            $res="\r\n".$res;
+            $res = "\r\n" . $res;
             $url = '';
-            $target='';
-            $messageChain=[];
+            $target = '';
+            $messageChain = [];
             switch ($data['type']) {
                 case 'GroupMessage':
                     $url = MiraiSender::sendGroupMessage;
-                    $target=trim($data['sender']['group']['id']);
-                    $messageChain= [
-                        MiraiHelper::BuildMessageAt($data['sender']['id']),
+                    $target = trim($data['sender']['group']['id']);
+                    $messageChain = [
                         MiraiHelper::BuildMessagePlain($res)
                     ];
                     break;
                 case 'FriendMessage':
                     $url = MiraiSender::sendFriendMessage;
-                    $target=trim($data['sender']['id']);
-                    $messageChain= [
+                    $target = trim($data['sender']['id']);
+                    $messageChain = [
                         MiraiHelper::BuildMessagePlain($res)
                     ];
                     break;
                 case 'TempMessage':
                     $url = MiraiSender::sendTempMessage;
-                    $target=trim($data['sender']['id']);
-                    $messageChain= [
+                    $target = trim($data['sender']['id']);
+                    $messageChain = [
                         MiraiHelper::BuildMessagePlain($res)
                     ];
                     break;
@@ -78,7 +78,22 @@ class MiraiUploadHandles
 
     public static function MemberJoinEventHandle($data)
     {
+        $res = Dictionary::getReply('%欢迎');
+        if ($res !== null)
+            $res = replaceLineMark($res[rand(0, count($res) - 1)]->ans);
 
+        $url = MiraiSender::sendGroupMessage;
+        $target = trim($data['member']['group']['id']);
+        $messageChain = [
+            MiraiHelper::BuildMessageAt($data['member']['id']),
+            MiraiHelper::BuildMessagePlain($res)
+        ];
+
+        $data = array(
+            'messageChain' => $messageChain,
+            'target' => $target);
+
+        MiraiSender::Send($url, $data);
     }
 
     public static function MemberLeaveEventKickHandle($data)
