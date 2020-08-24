@@ -5,6 +5,7 @@ import {DefaultButton, PrimaryButton, Stack, IStackTokens} from 'office-ui-fabri
 import {mergeStyleSets} from 'office-ui-fabric-react/lib/Styling';
 import {IDictioary} from "../interface/IDictionary";
 import {apiMap, FetchAPI} from "../utils/Api";
+import {IBan} from "../interface/IBan";
 
 const classNames = mergeStyleSets({
     root: {
@@ -50,12 +51,12 @@ const classNames = mergeStyleSets({
 
 export interface IDetailsListDocumentsExampleState {
     columns: IColumn[];
-    items: IDictioary[];
+    items: IBan[];
 }
 
 
-export class DictionaryList extends React.Component<{}, IDetailsListDocumentsExampleState> {
-    private _allItems: IDictioary[] = [];
+export class BanDictionaryList extends React.Component<{}, IDetailsListDocumentsExampleState> {
+    private _allItems: IBan[] = [];
     private _onColumnClick = (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
         const {columns, items} = this.state;
         const newColumns: IColumn[] = columns.slice();
@@ -78,10 +79,10 @@ export class DictionaryList extends React.Component<{}, IDetailsListDocumentsExa
     public columns: IColumn[] = [
         {
             key: 'column2',
-            name: '关键词',
-            fieldName: 'ask',
-            minWidth: 20,
-            maxWidth: 50,
+            name: 'QQ',
+            fieldName: 'user_id',
+            minWidth: 75,
+            maxWidth:100,
             isRowHeader: true,
             isResizable: true,
             isSorted: true,
@@ -94,18 +95,35 @@ export class DictionaryList extends React.Component<{}, IDetailsListDocumentsExa
         },
         {
             key: 'column3',
-            name: '应答',
-            fieldName: 'dateModifiedValue',
-            minWidth: 70,
-            maxWidth: 1000,
+            name: '拦截次数',
+            fieldName: 'reject_times',
+            minWidth: 40,
+            maxWidth: 50,
             isResizable: true,
             onColumnClick: this._onColumnClick,
             data: 'string',
-            onRender: (item: IDictioary) => {
+            onRender: (item: IBan) => {
                 return <div style={{
                     whiteSpace: "pre-wrap"
                 }}>
-                    {item.ans}</div>;
+                    {item.reject_times}</div>;
+            },
+            isPadded: true,
+        },
+        {
+            key: 'column3',
+            name: '备注',
+            fieldName: 'comments',
+            minWidth: 50,
+            maxWidth: 100,
+            isResizable: true,
+            onColumnClick: this._onColumnClick,
+            data: 'string',
+            onRender: (item: IBan) => {
+                return <div style={{
+                    whiteSpace: "pre-wrap"
+                }}>
+                    {item.comments}</div>;
             },
             isPadded: true,
         },
@@ -157,7 +175,7 @@ export class DictionaryList extends React.Component<{}, IDetailsListDocumentsExa
 
     private _onChangeText = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string): void => {
         this.setState({
-            items: text ? this._allItems.filter(i => i.ask.toLowerCase().indexOf(text) > -1) : this._allItems,
+            items: text ? this._allItems.filter(i => i.user_id.toLowerCase().indexOf(text) > -1) : this._allItems,
         });
     };
 
@@ -166,8 +184,8 @@ export class DictionaryList extends React.Component<{}, IDetailsListDocumentsExa
     }
 
     async _getDictioaries(): Promise<void> {
-        let items: IDictioary[] = [];
-        this._allItems = (await FetchAPI(apiMap.getDictionary, {"pass": "123456"})).data as IDictioary[];
+        let items: IBan[] = [];
+        this._allItems = (await FetchAPI(apiMap.getBan, {"pass": "123456"})).data as IBan[];
         console.log(this._allItems)
         this.setState({
             items: this._allItems,

@@ -23,6 +23,8 @@ class MiraiSender
     public const sendTempMessage = '/sendTempMessage';
     public const sendFriendMessage = '/sendFriendMessage';
 
+    public const memberJoinRequestEvent = '/resp/memberJoinRequestEvent';
+
     public static function Send($url, $data)
     {
         $host = Config::get('qqBot.report_url');

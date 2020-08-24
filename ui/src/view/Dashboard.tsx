@@ -3,6 +3,8 @@ import {NavBar} from "../components/NavBar";
 import {Route, Switch} from "react-router";
 import {DictionaryList} from "../components/WordDictionaryList";
 import {App} from "../App";
+import {DictioaryView} from "./DictionaryView";
+import {BlackListView} from "./BlackListView";
 
 export const DashBoard: React.FunctionComponent = () => {
     return (
@@ -10,8 +12,9 @@ export const DashBoard: React.FunctionComponent = () => {
 
             <NavBar/>
             <Switch>
-                <div style={{width: "calc(100% - 375px)", minWidth: "400px"}}>
-                    <Route path="/dictionary" component={DictionaryList}/>
+                <div style={{width: "100%", minWidth: "400px", maxWidth: "800px"}}>
+                    <Route path="/dictionary" component={DictioaryView}/>
+                    <Route path="/black-list" component={BlackListView}/>
                 </div>
 
             </Switch>

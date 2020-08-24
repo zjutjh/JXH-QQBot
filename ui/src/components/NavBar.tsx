@@ -14,6 +14,11 @@ const navLinkGroups: INavLinkGroup[] = [
                 name: '词典',
                 url: '#/dictionary',
             },
+            {
+                key: 'BlackList',
+                name: '黑名单',
+                url: '#/black-list',
+            },
 
         ],
     },
