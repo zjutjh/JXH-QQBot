@@ -45,9 +45,9 @@ class MiraiUploadHandles
         $res = Dictionary::getReply($msg);
 
         if ($res !== null)
-            $res = replaceLineMark($res[rand(0, count($res) - 1)]->ans);
+            $res = replaceLineMark($res[mt_rand(0, count($res) - 1)]->ans);
 
-        else if ($data['type'] != 'GroupMessage' || MiraiHelper::isAtBot($data['messageChain']))
+        else if ($data['type'] != 'GroupMessage' || MiraiHelper::isAtBot($data['messageChain']) || mt_rand(0, 100) === 1)
             $res = AIChat::TencentAIChat(trim($data['sender']['id']), $msg);
         if ($res) {
             $url = '';
@@ -149,7 +149,7 @@ class MiraiUploadHandles
     public static function MemberJoinRequestEventHandle($data)
     {
 
-        DB::transaction(function ()use ($data) {
+        DB::transaction(function () use ($data) {
             $BenUser = BlackList::where('user_id', $data['fromId'])->lockForUpdate()->first();
             if ($BenUser !== null) {
                 $data = array(

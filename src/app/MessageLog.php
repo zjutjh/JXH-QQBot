@@ -15,7 +15,7 @@ class MessageLog extends Model
     public function setMessageChainAttribute($value)
     {
         $text=MiraiHelper::getPainText($value);
-        $this->attributes['message'] = $text;
+        $this->attributes['message'] = substr($text,255);
     }
 
     public function setSenderAttribute($value)
